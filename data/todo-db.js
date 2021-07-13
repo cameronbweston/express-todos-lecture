@@ -1,5 +1,6 @@
 export { 
-	find
+	find,
+  findById
 }
 
 const todos = [
@@ -7,6 +8,16 @@ const todos = [
   {text: 'Sleep under the stars', done: false, _id: 127904},
   {text: 'Buy milk', done: false, _id: 139608},
 ]
+const findById = (id, callback) =>{
+  try {
+    const todo = todos.find(todo => todo._id === parseInt(id))
+    if (!todo) throw new Error ('No todo was found')
+    return callback(null, todo)
+  } catch (error) {
+    console.log(error)
+    return callback(error, null)
+  }
+}
 
 const find = (conditions, callback) => {
   // see if this works, if not, execute the code in the catch block
