@@ -1,6 +1,8 @@
 export { 
 	find,
-  findById
+  findById,
+  create, 
+  findByIdAndDelete
 }
 
 const todos = [
@@ -34,3 +36,24 @@ const find = (conditions, callback) => {
     callback(error, [])
   }
 }
+
+function create(todo, callback) {
+    // Add the id
+    todo._id = Date.now() % 1000000
+    // New todos wouldn't be done
+    todo.done = false
+    todos.push(todo)
+    return callback(null, todo)
+  }
+
+  function findByIdAndDelete(id, callback) {
+    try { 
+        // Find the index based on the _id of the todo object
+        const idx = todos.findIndex(todo => todo._id == parseInt(id))
+        const deletedTodo = todos.splice(idx, 1)
+        if (!deletedTodo.length ) throw new Error ('No todo was deleted')
+        return callback(null, deletedTodo[0])
+      } catch(error) {
+        return callback(error, null)
+      }
+  }

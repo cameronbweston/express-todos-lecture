@@ -4,6 +4,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import methodOverride from 'method-override'
 
 import { router as indexRouter } from './routes/index.js'
 import { router as todosRouter } from './routes/todos.js'
@@ -16,6 +17,9 @@ app.set(
   path.join(path.dirname(fileURLToPath(import.meta.url)), 'views')
 )
 app.set('view engine', 'ejs')
+app.use(function(req, res, next) {
+  next()
+})
 
 app.use(logger('dev'))
 app.use(express.json())
@@ -26,7 +30,7 @@ app.use(
     path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')
   )
 )
-
+app.use(methodOverride('_method'))
 app.use('/', indexRouter)
 app.use('/todos', todosRouter)
 

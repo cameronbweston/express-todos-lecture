@@ -3,14 +3,18 @@ import * as todoDb from '../data/todo-db.js'
 
 export {
   index,
-  show
+  show,
+  newTodo as new,
+  create,
+  deleteTodo as delete
 }
 
 function index(req, res) {
   todoDb.find({}, function(error, todos) {
     res.render('todos/index', {
       todos,
-      error
+      error,
+      time: req.time
     })
   })
 }
@@ -23,3 +27,19 @@ function show(req, res) {
     })
   })
 }
+
+function newTodo(req, res) {
+    res.render('todos/new');
+}
+
+function create(req, res) {
+    todoDb.create(req.body, function(error, todo) {
+        res.redirect('/todos')
+    })
+}
+
+function deleteTodo(req, res) {
+    todoDb.findByIdAndDelete(req.params.id, function(error, todo) {
+      res.redirect('/todos')
+    })
+  }
