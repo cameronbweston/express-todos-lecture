@@ -1,10 +1,16 @@
 import { Router } from 'express'
 const router = Router()
+import * as todoDb from '../data/todo-db.js'
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource')
+router.get('/', function(req, res) {
+  todoDb.find({}, function(error, todos) {
+    res.render('todos/index', {
+      todos: todos,
+      error: error
+    })
+  })
 })
+
 
 export {
   router
